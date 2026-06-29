@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorado eMTB Trail Guide — Westminster/Broomfield</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+
+  :root {
+    --dirt: #2C1A0E;
+    --pine: #1A3A2A;
+    --sky: #4A7FA5;
+    --gold: #D4A017;
+    --orange: #E05C1A;
+    --stone: #8A7968;
+    --cream: #F5F0E8;
+    --white: #FDFBF7;
+    --tier-a: #D4A017;
+    --tier-b: #4A7FA5;
+    --tier-c: #7BAF5A;
+    --shadow: 0 2px 12px rgba(44,26,14,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--cream);
+    color: var(--dirt);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .hero {
+    background: var(--dirt);
+    color: var(--white);
+    padding: 28px 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 20px rgba(0,0,0,0.4);
+  }
+  .hero-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(22px, 5vw, 36px);
+    line-height: 1;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-sub {
+    font-size: 12px;
+    color: #A89880;
+    margin-top: 4px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* TODAY BOX */
+  .today-box {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 10px 14px;
+    min-width: 180px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .today-date {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--white);
+    letter-spacing: 0.3px;
+  }
+  .even-status {
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 4px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  .even-status.open { background: #2E6E3E; color: #7FD4A0; }
+  .even-status.closed { background: #6E2E2E; color: #F4A0A0; }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 11px;
+    color: #A89880;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 2px;
+  }
+  .filter-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: #D0C5B5;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .filter-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .filter-btn.tier-a.active { background: var(--tier-a); border-color: var(--tier-a); color: #2C1A0E; }
+  .filter-btn.tier-b.active { background: var(--tier-b); border-color: var(--tier-b); color: #fff; }
+  .filter-btn.tier-c.active { background: var(--tier-c); border-color: var(--tier-c); color: #fff; }
+
+  /* LEGEND PILLS */
+  .legend {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #A89880;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* MAIN LAYOUT */
+  .main { padding: 16px; max-width: 900px; margin: 0 auto; }
+
+  /* QUICK STATS */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .stat-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--orange);
+  }
+  .stat-label { font-size: 10px; color: var(--stone); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+
+  /* TRAIL CARDS */
+  .trail-grid { display: flex; flex-direction: column; gap: 14px; }
+
+  .trail-card {
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border-left: 5px solid var(--stone);
+    transition: box-shadow 0.2s;
+  }
+  .trail-card:hover { box-shadow: 0 4px 24px rgba(44,26,14,0.2); }
+  .trail-card.tier-a { border-left-color: var(--tier-a); }
+  .trail-card.tier-b { border-left-color: var(--tier-b); }
+  .trail-card.tier-c { border-left-color: var(--tier-c); }
+  .trail-card.hidden { display: none; }
+
+  .card-header {
+    padding: 14px 16px 12px;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: start;
+    user-select: none;
+  }
+  .card-header:hover { background: rgba(0,0,0,0.02); }
+
+  .card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .card-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--stone);
+    background: var(--cream);
+    border-radius: 4px;
+    padding: 1px 6px;
+    flex-shrink: 0;
+  }
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.1;
+    color: var(--dirt);
+  }
+  .tier-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+  .tier-badge.a { background: #FDF3D0; color: #8A6500; }
+  .tier-badge.b { background: #D0E4F5; color: #1F5A7A; }
+  .tier-badge.c { background: #D6EDCA; color: #3A6520; }
+
+  .card-meta {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--stone);
+    font-weight: 500;
+  }
+  .meta-item .icon { font-size: 14px; }
+
+  /* PERMIT BANNER */
+  .permit-banner {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-top: 6px;
+    display: inline-block;
+    letter-spacing: 0.3px;
+  }
+  .permit-free { background: #D6EDCA; color: #3A6520; }
+  .permit-paid { background: #FFF0D0; color: #8A5000; }
+  .permit-even { background: #D0E4F5; color: #1F5A7A; }
+  .permit-warning { background: #FFE8CC; color: #994400; }
+
+  /* CHEVRON */
+  .chevron {
+    font-size: 18px;
+    color: var(--stone);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .trail-card.open .chevron { transform: rotate(180deg); }
+
+  /* CARD BODY */
+  .card-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid #EDE8DF;
+  }
+  .trail-card.open .card-body { display: block; }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--stone);
+    margin: 14px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #EDE8DF;
+  }
+
+  /* ACCESS INFO */
+  .access-box {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .access-box p { margin-bottom: 6px; }
+  .access-box p:last-child { margin-bottom: 0; }
+  .access-label { font-weight: 600; color: var(--dirt); }
+
+  /* PERMIT BOX */
+  .permit-box {
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-left: 3px solid;
+  }
+  .permit-box.free { background: #EDF7E6; border-color: var(--tier-c); }
+  .permit-box.paid { background: #FFF8EC; border-color: var(--gold); }
+  .permit-box.rule { background: #EBF3FB; border-color: var(--sky); }
+
+  /* TRAIL TABLE */
+  .trail-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 4px; }
+  .trail-table th {
+    text-align: left;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--stone);
+    padding: 6px 8px;
+    border-bottom: 2px solid #EDE8DF;
+  }
+  .trail-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #F0EBE2;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .trail-table tr:last-child td { border-bottom: none; }
+  .trail-table tr:hover td { background: #FAF7F2; }
+
+  .diff-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .diff-green { background: #4CAF50; color: #fff; }
+  .diff-blue { background: #2196F3; color: #fff; }
+  .diff-black { background: #333; color: #fff; }
+  .diff-dh { background: #D32F2F; color: #fff; }
+  .diff-xc { background: #7BAF5A; color: #fff; }
+
+  .use-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .use-bike-only { background: #FFE0CC; color: #8A3000; }
+  .use-multi { background: #E8E8E8; color: #444; }
+  .use-hike { background: #D6F0FF; color: #1A4A6E; }
+
+  .star-trail { color: var(--gold); font-weight: 700; }
+
+  /* DESCRIPTION */
+  .desc-text {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #3A2A1A;
+    margin-bottom: 8px;
+  }
+
+  /* MAP LINK */
+  .map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--pine);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin-top: 6px;
+    margin-right: 8px;
+    transition: background 0.15s;
+  }
+  .map-btn:hover { background: #0E2A1A; }
+  .map-btn.dir { background: var(--sky); }
+  .map-btn.dir:hover { background: #2A5F85; }
+  .map-btn.tf { background: #5A4A8A; }
+  .map-btn.tf:hover { background: #3A2A6A; }
+
+  /* REVIEWS */
+  .review-box {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #5A4A3A;
+    margin-top: 6px;
+    font-style: italic;
+    border-left: 3px solid var(--gold);
+  }
+  .review-source { font-style: normal; font-size: 11px; color: var(--stone); margin-top: 4px; font-weight: 600; }
+  .star-rating { color: var(--gold); font-size: 13px; margin-bottom: 4px; font-style: normal; }
+
+  /* NO RESULTS */
+  .no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--stone);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    display: none;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 11px;
+    color: var(--stone);
+    line-height: 1.6;
+  }
+  .footer a { color: var(--sky); }
+
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    .hero { padding: 20px 14px 14px; }
+    .today-box { min-width: 140px; }
+    .main { padding: 12px; }
+    .card-name { font-size: 17px; }
+    .trail-table { font-size: 11.5px; }
+    .trail-table th, .trail-table td { padding: 5px 5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-title">Colorado <span>eMTB</span> Trail Guide</div>
+      <div class="hero-sub">⛰️ Westminster / Broomfield (80021) · Updated June 2026 · Class 1 Only</div>
+    </div>
+    <div class="today-box">
+      <div class="today-date" id="todayDate">—</div>
+      <div class="even-status" id="evenStatus">—</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tier-a)"></div> Tier A — Purpose-built flow park</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tier-b)"></div> Tier B — Natural flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tier-c)"></div> Tier C — Scenic XC</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> ★ Top pick trail</div>
+  </div>
+
+  <div class="filters">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all" onclick="applyFilter('all',this)">All</button>
+    <button class="filter-btn tier-a" data-filter="a" onclick="applyFilter('a',this)">🏆 Tier A</button>
+    <button class="filter-btn tier-b" data-filter="b" onclick="applyFilter('b',this)">⚡ Tier B</button>
+    <button class="filter-btn tier-c" data-filter="c" onclick="applyFilter('c',this)">🌄 Tier C</button>
+    <button class="filter-btn" data-filter="free" onclick="applyFilter('free',this)">💚 Free</button>
+    <button class="filter-btn" data-filter="close" onclick="applyFilter('close',this)">🏃 &lt;35 min</button>
+    <button class="filter-btn" data-filter="even-open" onclick="applyFilter('even-open',this)" id="evenFilterBtn">📅 Open Today</button>
+    <button class="filter-btn" onclick="toggleOffline()" style="margin-left:6px; border-color:rgba(212,160,23,0.5); color:#D4A017;">📲 Save Offline</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">Locations</div></div>
+    <div class="stat-card"><div class="stat-num">40+</div><div class="stat-label">Trails Listed</div></div>
+    <div class="stat-card"><div class="stat-num" id="freeCount">7</div><div class="stat-label">Free Entry</div></div>
+    <div class="stat-card"><div class="stat-num">20</div><div class="stat-label">Min Closest</div></div>
+  </div>
+
+  <div class="trail-grid" id="trailGrid">
+
+    <!-- ===================== 1. MARYLAND MOUNTAIN ===================== -->
+    <div class="trail-card tier-a" data-tier="a" data-fee="free" data-drive="45" data-even="any">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#1</span>
+            <span class="card-name">Maryland Mountain</span>
+            <span class="tier-badge a">🏆 Tier A</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~45 min / 28 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Black Hawk, CO</span>
+            <span class="meta-item"><span class="icon">⬆️</span> ~1,000 ft descent</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-free">✅ FREE · No permit needed</span>
+            <span class="permit-banner" style="background:#EDE8DF;color:#5A4A3A;">Open any day</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">The crown jewel of free Front Range eMTB. A purpose-built, bike-only downhill park with machine-built berms, tabletops, and rhythm sections — the same format as a lift-accessed bike park, but free. Motor up Easy Money, then lap Fast Money and Hard Money all afternoon.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trail type:</span> Bike-only, directional downhill descents. No hikers on descent trails.</p>
+          <p><span class="access-label">Flow:</span> Dedicated climb trail to summit → pick your descent → ride back to trailhead → repeat. Pure lap riding system.</p>
+          <p><span class="access-label">Trailhead:</span> Hidden Treasure Trailhead — 8060 Black Hawk Blvd, Black Hawk, CO 80422. Free parking lot. Well-signed.</p>
+          <p><span class="access-label">Hours:</span> Open daily, no seasonal bike restrictions. Best April–October.</p>
+        </div>
+
+        <div class="permit-box free">
+          <strong>💚 FREE — No permit, no day pass, no even-day rule.</strong> Just show up, park, and ride. One of the only fully free purpose-built downhill bike parks on the Front Range.
+        </div>
+
+        <div class="section-title">🗺️ All Trails</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Easy Money</td>
+              <td>Climb</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only</span></td>
+              <td>Smooth gravel/singletrack to summit. ~20 min up. The eMTB express.</td>
+            </tr>
+            <tr>
+              <td>Green Flow</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only</span></td>
+              <td>Smooth descent through northwest meadow. Good warm-up or cool-down with Continental Divide views.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Claim Jumper</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-green">Green/Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only</span></td>
+              <td>Mellow berms and rollers. Start here your first visit to learn the mountain. No big surprises.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Fast Money</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only</span></td>
+              <td>Steep punchy start then opens into machine-built berms, side hits, and rhythm rollers all the way down. Smooth and fast — classic flow trail format.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Hard Money</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-black">Blue/Black</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only</span></td>
+              <td>2 miles / ~1,000 ft vertical. Big tall berms, long rhythm sections, substantial jump options. The main event.</td>
+            </tr>
+            <tr>
+              <td>Historic Gilpin Tramway</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only</span></td>
+              <td>Perimeter trail linking the full system between trailheads.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=Maryland+Mountain+Black+Hawk+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/8060+Black+Hawk+Blvd+Black+Hawk+CO+80422" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/maryland-mountain/" target="_blank">🗺️ Trailforks</a>
+
+        <div class="review-box">
+          <div class="star-rating">★★★★★ 4.5/5</div>
+          Hard Money alternates smooth rhythm sections with tall berms and substantial jump options. Dropping almost 1,000 feet in 2 miles is sure to get your endorphins rushing. Resort-quality design — did 4 laps in one afternoon on my eMTB.
+          <div class="review-source">MTB Project / Boulder Mountainbike Alliance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 2. APEX PARK ===================== -->
+    <div class="trail-card tier-b" data-tier="b" data-fee="free" data-drive="30" data-even="even">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#2</span>
+            <span class="card-name">Apex Park</span>
+            <span class="tier-badge b">⚡ Tier B</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~30 min / 22 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Golden, CO</span>
+            <span class="meta-item"><span class="icon">⭐</span> Closest Tier B</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-free">✅ FREE</span>
+            <span class="permit-banner permit-even" id="apexStatus">📅 Even Days Only (weekends)</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">Enchanted Forest is fast and loose — high-speed winding descent that rewards momentum. Less manicured than a bike park but the spirit is the same: climb up, send it down. Carries some loose chunk you'll fly through at speed. Solid Tier B that's close to Tier A on a good day.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trail type:</span> Directional singletrack on descent trails (even days). Shared climbing trails any day.</p>
+          <p><span class="access-label">Flow:</span> Climb via Heritage Trail or Kinney Run → descend via Enchanted Forest or Magic Mountain combo. True top-to-bottom laps on even days.</p>
+          <p><span class="access-label">Trailhead:</span> 3052 Heritage Rd, Golden, CO 80401. Arrive before 9am on even-day weekends — lot fills fast.</p>
+          <p><span class="access-label">Access note:</span> Grubstake Trail access from water tank road permanently closed Summer 2025 — use Kinney Run as alternate.</p>
+        </div>
+
+        <div class="permit-box rule">
+          <strong>📅 EVEN-DAY RULE (weekends only):</strong> Bikes only on even-numbered calendar dates (2nd, 4th, 6th…). Odd days = hikers &amp; equestrians only. Weekdays are shared-use any day. <strong>Check the date before you drive out.</strong> Today's status shown in the header above.
+        </div>
+
+        <div class="section-title">🗺️ All Trails</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Heritage Trail</td>
+              <td>Climb</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Main singletrack climb from Heritage Rd trailhead to ridge. Moderate grade, non-technical.</td>
+            </tr>
+            <tr>
+              <td>Kinney Run Trail</td>
+              <td>Climb / Access</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Alternate access replacing the closed Grubstake route (closed Summer 2025).</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Enchanted Forest</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only (even)</span></td>
+              <td>Start here. Fast, loose, winding singletrack all the way down. Carry momentum — the trail rewards commitment and speed.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Magic Mountain → Enchanted Forest</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-black">Blue/Black</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only (even)</span></td>
+              <td>Full top-to-bottom link. Magic Mountain is twistier and more committing up top, then flows into Enchanted Forest.</td>
+            </tr>
+            <tr>
+              <td>Poco Calle</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only (even)</span></td>
+              <td>Short connector for multi-lap routes back to the climb.</td>
+            </tr>
+            <tr>
+              <td>Rocker / Paydirt / Smelter</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only (even)</span></td>
+              <td>Additional even-day bike trails rounding out the network.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=3052+Heritage+Rd+Golden+CO+80401" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/3052+Heritage+Rd+Golden+CO+80401" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/apex-park/" target="_blank">🗺️ Trailforks</a>
+      </div>
+    </div>
+
+    <!-- ===================== 3. VIRGINIA CANYON ===================== -->
+    <div class="trail-card tier-a" data-tier="a" data-fee="free" data-drive="45" data-even="any">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#3</span>
+            <span class="card-name">Virginia Canyon Mountain Park</span>
+            <span class="tier-badge a">🏆 Tier A</span>
+            <span style="font-size:11px;color:var(--orange);font-weight:700;">UPDATED 2026</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~45 min / 37 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Idaho Springs, CO</span>
+            <span class="meta-item"><span class="icon">⬆️</span> 1,300 ft / 4 mi pedal climb</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-free">✅ FREE to pedal</span>
+            <span class="permit-banner permit-paid">💛 Gondola fee (optional)</span>
+            <span class="permit-banner" style="background:#EDE8DF;color:#5A4A3A;">Open any day</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">This place has completely leveled up. What was a solid pedal-up bike system is now one of the most exciting eMTB destinations on the Front Range — 16 miles of trail open, most descents are bike-only directional, and the Mighty Argo Cable Car (opened May 2026) gives you lift-access laps for a fee. Pedaling up is still free and totally doable on the Copperhead. Descents include big berms, rock features, jumps, and wooden features. Growing toward 28 miles total. Intermediate to expert — this is not a beginner hill.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Parking:</span> No dedicated trailhead lot — park on Colorado Blvd in Idaho Springs or in designated town lots. Use parkidahosprings.com to plan. Lot fills early on weekends.</p>
+          <p><span class="access-label">Getting to the trailhead:</span> From parking, ride the Clear Creek Greenway through town to the trail entrance. Connect to Riverside Drive via the pedestrian bridge at CRC Park or 23rd Ave, then ride up the diagonal ramp past the Mighty Argo base to the upper bench where trails begin.</p>
+          <p><span class="access-label">Trail type:</span> 16+ miles of trails — mix of bike-only directional descents, bike uphill-only climbs, and hiker-only trails. Descent trails are fully separated from hikers.</p>
+        </div>
+
+        <div class="permit-box free">
+          <strong>Option 1 — Pedal up (FREE):</strong> Take Rosa Gulch Trail from the upper bench. Bikes go uphill only on this trail — hikers also use it but traffic is separated by direction. Steady singletrack climb, 4 miles / 1,300 ft to the top at Miners Point (8,800 ft). Continuous but gentle zig-zag grade — very manageable on the Copperhead in Eco. Reach the Hub at ~2 miles (halfway, great views of Clear Creek) — can access Hopper and Gauntlet Gold descents from here. Continue another 2 miles to the summit to access Drop Shaft and the full upper trail system.
+        </div>
+
+        <div class="permit-box paid">
+          <strong>Option 2 — Mighty Argo Cable Car (fee required):</strong> North America's first gondola bike cabins. 1.2-mile ride, gains 1,300 ft in ~10 minutes. Drops you at Miners Point (8,800 ft) — same summit as the pedal climb, direct access to all descent trails. Onsite parking at the Argo Mill is $9.95 for 4 hours. Book tickets at mightyargo.com. Bike-specific gondola cabins — roll your bike in vertically. Intermediate/advanced riders only — the gondola itself warns "No Beginners." Use pedal climb for first lap to preview trails, then use gondola for subsequent laps if desired.
+        </div>
+
+        <div class="section-title">🗺️ All Trails</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Rosa Gulch Trail</td>
+              <td>Climb</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-bike-only">Bikes uphill only</span></td>
+              <td>4 miles / 1,300 ft. Gentle continuous singletrack climb. Reaches the Hub at ~2 miles, summit at 4 miles. Extended in 2026 all the way to Miners Point. The eMTB express — motor up in Eco.</td>
+            </tr>
+            <tr>
+              <td>Morning Star / Buttermilk Peak</td>
+              <td>Climb variant</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Bikes + hikers</span></td>
+              <td>Alternate climbing trail accessible from the Hub. Adds variety on subsequent laps.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Gauntlet Gold</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Directional</span></td>
+              <td>Accessible from the Hub (~halfway up). Flowing blue singletrack descent — good first run to read the mountain's speed before going higher. Berms, smooth and fast.</td>
+            </tr>
+            <tr>
+              <td>Hopper / Eureka</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Directional</span></td>
+              <td>Blue descents from the Hub area. Flowing and swoopy — good warm-up options before committing to Drop Shaft from the summit.</td>
+            </tr>
+            <tr>
+              <td>Ghost Town / Tectonic / Fire In The Hole</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Directional</span></td>
+              <td>Newer Phase 3 trails from upper sections. Berms, features, progressive lines. Growing network — check Trailforks for current status.</td>
+            </tr>
+            <tr>
+              <td>22 Karat</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-black">Black</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Directional</span></td>
+              <td>Easier black diamond — drops fast down the south face. Described as "a bike park on the side of a mountain." Many alternate lines. Fast and committing.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Drop Shaft</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-black">Blue/Black</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Directional</span></td>
+              <td>Signature trail from summit. 2.5+ miles, 1,215 ft descent back to the Argo base. Berms, loose terrain, jumps, rock features, wooden corkscrew loop feature near the bottom. Black/double-black alternative lines with mandatory drops. Do a blue lap first. Extended to summit in 2026.</td>
+            </tr>
+            <tr>
+              <td>Panic Switch / Old School</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Directional</span></td>
+              <td>Newest additions (opened 2026) from the Shimano Trail Born Hub. Check current status at comba.org.</td>
+            </tr>
+            <tr>
+              <td>Pro-Line / Crosscut</td>
+              <td>Expert variant</td>
+              <td><span class="diff-pill diff-black">Double Black</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Experts Only</span></td>
+              <td>Mandatory elevated wood ladder drop. Merges into Drop Shaft. Experts only — do not attempt without fully previewing features on foot.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=Argo+Mill+Idaho+Springs+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/Argo+Mill+Idaho+Springs+CO" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/virginia-canyon-mountain-park-67559/" target="_blank">🗺️ Trailforks</a>
+        <a class="map-btn" href="https://mightyargo.com" target="_blank" style="background:#8A5A00;">🚠 Gondola Tickets</a>
+
+        <div class="review-box">
+          <div class="star-rating">★★★★★ — Growing fast</div>
+          "What we tried to lay out is a bike-only, downhill-only, directional experience — just that ability to turn your bike and go downhill without being concerned about someone on the trail ahead of you." — COMBA Executive Director. Drop Shaft is steep, fast, and technical with wooden features unlike anything else free on the Front Range.
+          <div class="review-source">COMBA / The Pro's Closet, 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 4. CENTENNIAL CONE ===================== -->
+    <div class="trail-card tier-b" data-tier="b" data-fee="free" data-drive="50" data-even="even">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#4</span>
+            <span class="card-name">Centennial Cone Park</span>
+            <span class="tier-badge b">⚡ Tier B</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~50 min / 34 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Golden / Idaho Springs, CO</span>
+            <span class="meta-item"><span class="icon">📅</span> Even days (weekends)</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-free">✅ FREE</span>
+            <span class="permit-banner permit-even" id="coneStatus">📅 Even Days Only (weekends)</span>
+            <span class="permit-banner permit-warning">⚠️ Closed Dec 1–Jan 31</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">Travois Trail is the reason to come here — flowing singletrack threading through pine groves above Clear Creek Canyon. Smooth, fast, good sightlines — not a rock garden. The eMTB motor turns the long perimeter climb into something genuinely fun, leaving full legs for the descent.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trail type:</span> Singletrack loop system. On even days, descent trails are directional bike-only. Shared climbing trails any day weekdays.</p>
+          <p><span class="access-label">Flow:</span> Park at Mayhem Gulch lot → climb Mayhem Gulch Trail → follow Centennial Cone Trail counterclockwise gaining elevation → descend Travois Trail → return to trailhead. Good lap structure.</p>
+          <p><span class="access-label">Trailhead:</span> Two trailheads on Clear Creek Canyon Rd west of Golden — Mayhem Gulch lot is the main one.</p>
+          <p><span class="access-label">Land manager:</span> Jefferson County Open Space. Class 1 eMTBs confirmed (7 designated eMTB trails).</p>
+        </div>
+
+        <div class="permit-box rule">
+          <strong>📅 EVEN-DAY RULE (weekends):</strong> Bikes only on even-numbered dates. Odd days = hikers &amp; equestrians only. Weekdays open any day. Also <strong>closed Dec 1 – Jan 31.</strong> Elk Range Trail additionally closed Feb 1 – June 15 for elk calving.
+        </div>
+
+        <div class="section-title">🗺️ All Trails</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Mayhem Gulch Trail</td>
+              <td>Climb</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Start here from lower Mayhem Gulch lot. Singletrack climb to main loop. Moderate grade.</td>
+            </tr>
+            <tr>
+              <td>Centennial Cone Trail (lower climb)</td>
+              <td>Climb</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Follow counterclockwise to gain elevation through open meadow and pine forest.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Travois Trail</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only (even)</span></td>
+              <td>The payoff. Flowing singletrack through pine groves above Clear Creek Canyon. Smooth, fast, good sightlines. The trail you came for.</td>
+            </tr>
+            <tr>
+              <td>Centennial Cone Trail (upper descent)</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only (even)</span></td>
+              <td>Additional fast swoopy sections on the upper loop. Alternates climbing and descending as it wraps around the cone.</td>
+            </tr>
+            <tr>
+              <td>Elk Range Trail</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Seasonal connector. <strong>Closed Feb 1 – June 15</strong> for elk calving.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=Centennial+Cone+Park+Golden+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/Centennial+Cone+Park+Clear+Creek+Canyon+Rd+Golden+CO" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/centennial-cone/" target="_blank">🗺️ Trailforks</a>
+      </div>
+    </div>
+
+    <!-- ===================== 5. WHITE RANCH PARK ===================== -->
+    <div class="trail-card tier-b" data-tier="b" data-fee="free" data-drive="35" data-even="any">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#5</span>
+            <span class="card-name">White Ranch Park</span>
+            <span class="tier-badge b">⚡ Tier B</span>
+            <span style="font-size:11px;color:var(--orange);font-weight:700;">NEW</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~35 min / 23 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Golden, CO</span>
+            <span class="meta-item"><span class="icon">⬆️</span> ~1,740 ft climb</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-free">✅ FREE · No permit</span>
+            <span class="permit-banner" style="background:#EDE8DF;color:#5A4A3A;">Open any day</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">Largest park in the Jeffco system — 21+ miles of multi-use trails over 4,000 acres. Belcher Hill is a legendary grind (brutal on a regular MTB, manageable on eMTB) and the Mustang Trail descent is what everyone comes for: fast, technical, bermy corners, drops, and forested singletrack. The motor completely transforms this place — what used to be a suffer-fest is now a genuine all-day lap session.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trail type:</span> Singletrack — multi-use throughout. Longhorn Trail has a 0.9-mile bike-only, one-way section. No even-day rule.</p>
+          <p><span class="access-label">Flow:</span> Two options: (1) Lower East Trailhead on W 56th Ave — climb Belcher Hill (~1,740 ft gain) to the bench, then descend Mustang or Rawhide. (2) Upper West Trailhead on Belcher Hill Rd — skip the big climb and access upper trails directly.</p>
+          <p><span class="access-label">Trailhead:</span> East Trailhead: W 56th Ave, Golden CO (off Hwy 93). West Trailhead: Belcher Hill Rd (upper access, skip the main climb). Note: Mustang/Sawmill area has trail improvements Jun–Jul 2026.</p>
+          <p><span class="access-label">Land manager:</span> Jefferson County Open Space. eMTBs confirmed on natural-surface trails.</p>
+        </div>
+
+        <div class="permit-box free">
+          <strong>💚 FREE — No permit, no day pass, no even-day rule.</strong> Open any day year-round. The big climb is the only barrier — and your motor handles that.
+        </div>
+
+        <div class="section-title">🗺️ All Trails</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Belcher Hill Trail</td>
+              <td>Climb / Descent</td>
+              <td><span class="diff-pill diff-black">Black</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>The main climb — ~1,740 ft, steep and rocky. eMTB makes it manageable. Also a rowdy descent (drops, water bar jumps on upper section).</td>
+            </tr>
+            <tr>
+              <td>Round-Up Loop</td>
+              <td>Climb variant</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Short singletrack loop off Belcher — good break from the doubletrack climb. Fun and mellow.</td>
+            </tr>
+            <tr>
+              <td>Rawhide Trail</td>
+              <td>Loop / Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>4.5-mile loop from West Trailhead. Forested, fun descent sections. Good as an intro loop or add-on.</td>
+            </tr>
+            <tr>
+              <td>Sawmill Trail</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Connects Belcher Hill to upper network. Wider trail, currently being improved (Jun–Jul 2026).</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Mustang Trail</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-black">Blue/Black</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>The trail everyone comes for. Fast bermy corners, drops, steep technical sections, planked crossings. 804 ft descent. "If you ride one trail on the Front Range, this should be it." Currently being rerouted below Sawmill junction (Jun–Jul 2026).</td>
+            </tr>
+            <tr>
+              <td>Longhorn Trail</td>
+              <td>Loop / Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>0.9-mile section is <strong>bike-only, one-way</strong>. Flat-ish, fast singletrack. Good for looping back without descending Belcher. Technical in spots.</td>
+            </tr>
+            <tr>
+              <td>Shorthorn Trail</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Short connector linking Longhorn to lower trails for building multi-trail loops.</td>
+            </tr>
+            <tr>
+              <td>Whippletree Trail</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Lower connector linking back toward Belcher for loop completion.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=White+Ranch+Park+Golden+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/White+Ranch+Park+Golden+CO" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/white-ranch-park/" target="_blank">🗺️ Trailforks</a>
+
+        <div class="review-box">
+          <div class="star-rating">★★★★½ 4.6/5</div>
+          Mustang Trail is a must-do. Awesome downhill and flow — forested and shady. Rode Rawhide Loop then came through on Mustang — total rip. The eMTB transforms this place: what used to be a brutal day is now a fun all-day lap session.
+          <div class="review-source">MTB Project / Trailforks community</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 6. STAUNTON STATE PARK ===================== -->
+    <div class="trail-card tier-b" data-tier="b" data-fee="paid" data-drive="55" data-even="any">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#6</span>
+            <span class="card-name">Staunton State Park</span>
+            <span class="tier-badge b">⚡ Tier B</span>
+            <span style="font-size:11px;color:var(--orange);font-weight:700;">NEW</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~55 min / 40 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Conifer, CO</span>
+            <span class="meta-item"><span class="icon">⬆️</span> 9,500 ft elevation</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-paid">💛 $10 Day Pass</span>
+            <span class="permit-banner" style="background:#EDE8DF;color:#5A4A3A;">Open any day</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">Colorado's newest state park (opened 2013) — granite cliffs, aspen groves, high meadows, and 38 MTB-designated trails. eMTBs allowed on all state park trails (not on USFS land portions like Rusty Buckle or North Elk). Great flow on Bear Paw and Mason Creek sections. Feels more remote and less crowded than Jeffco parks. Good for days when Apex/Centennial are closed (odd days).</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trail type:</span> Singletrack loop system — mixed multi-use and bike-friendly. No directional restrictions or even-day rules.</p>
+          <p><span class="access-label">Flow:</span> Loop-based system — no single dedicated climb. Start from Parking Area #1 (southernmost), follow Staunton Ranch Trail east. Standard route: Staunton Ranch Trail → Marmot Passage → Border Line → Mason Creek → Bear Paw → back. 3–4 hour adventure day.</p>
+          <p><span class="access-label">Trailhead:</span> 92 Crawford Gulch Rd, Golden, CO 80403. Multiple parking areas — Lot #1 is main. $10 day pass pay station at entry.</p>
+          <p><span class="access-label">eMTB note:</span> eMTBs NOT allowed on Rusty Buckle or North Elk Creek trails — those sections cross USFS (National Forest) land. All other trails: eMTBs confirmed.</p>
+          <p><span class="access-label">Hours:</span> 5am–10pm daily.</p>
+        </div>
+
+        <div class="permit-box paid">
+          <strong>💛 $10/vehicle day pass — required.</strong> Pay at the entry gate or kiosk. Colorado State Parks Annual Pass ($80) covers entry — pays for itself in ~8 visits. No reservation needed for day use. Wildlife closures Mar–Jul may affect some trails — check cpw.state.co.us before riding.
+        </div>
+
+        <div class="section-title">🗺️ All Trails (eMTB-legal unless noted)</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Staunton Ranch Trail</td>
+              <td>Access / Loop</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Main access trail from Lot #1. Moderate, well-signed. Heavy with hikers on south section — widens there.</td>
+            </tr>
+            <tr>
+              <td>Border Line Trail</td>
+              <td>Climb</td>
+              <td><span class="diff-pill diff-black">Black</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Hardest climb in the park. Switchbacks to Staunton Rocks Overlook. Worth the suffer.</td>
+            </tr>
+            <tr>
+              <td>Marmot Passage Trail</td>
+              <td>Climb / Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Most elevation gain of any trail (184m). Good descent back to Elk Falls Pond section.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Mason Creek Trail</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Most elevation descent (314m). Fast, flowing descent through pines and aspen grove to the Old Mill site. The main descent reward.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Bear Paw Trail</span></td>
+              <td>Descent / Feature</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Very fun, at times technical. Moderate options around technical features. Eagle Cliffs Overlook hike-a-bike spur — best view in park.</td>
+            </tr>
+            <tr>
+              <td>Chimney Rock Trail</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>From Marmot Passage down to Elk Falls Pond. Good alternative descent line.</td>
+            </tr>
+            <tr>
+              <td>Bugling Elk Trail</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Short section climbing from Elk Falls Pond north — great chance to rest legs between descents.</td>
+            </tr>
+            <tr>
+              <td>Horseshoe Trail → Frazer Meadow</td>
+              <td>Adventure loop</td>
+              <td><span class="diff-pill diff-green">Green/Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Long scenic route through the heart of the park. Best eMTB adventure option if doing a second loop.</td>
+            </tr>
+            <tr>
+              <td>Rusty Buckle Trail</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-black">Black</span></td>
+              <td><span class="use-badge use-hike">⛔ No eMTB</span></td>
+              <td><strong>eMTBs NOT allowed</strong> — on USFS (National Forest) land. Regular MTB only.</td>
+            </tr>
+            <tr>
+              <td>North Elk Creek Trail</td>
+              <td>XC</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-hike">⛔ No eMTB</span></td>
+              <td><strong>eMTBs NOT allowed</strong> — on USFS land. Longest trail at 4.2km. Regular MTB only.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=Staunton+State+Park+Conifer+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/92+Crawford+Gulch+Rd+Golden+CO+80403" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/staunton-state-park-15820/" target="_blank">🗺️ Trailforks</a>
+
+        <div class="review-box">
+          <div class="star-rating">★★★★★ 4.7/5</div>
+          A great trail for someone who wants a longer ride for the first time. The downhill sections are very fun and doable, and the climbs are reasonable. Highlights: Bear Paw Trail, Marmot Passage, Elk Falls, Eagle Cliffs Overlook. Best view in the park at the overlook.
+          <div class="review-source">MTB Project / AllTrails, 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 7. MARSHALL MESA ===================== -->
+    <div class="trail-card tier-c" data-tier="c" data-fee="free" data-drive="20" data-even="any">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#7</span>
+            <span class="card-name">Marshall Mesa / Doudy Draw</span>
+            <span class="tier-badge c">🌄 Tier C</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~20 min / 14 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Superior / Boulder, CO</span>
+            <span class="meta-item"><span class="icon">⭐</span> Closest to Home</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-free">✅ FREE · No permit</span>
+            <span class="permit-banner" style="background:#EDE8DF;color:#5A4A3A;">Open any day 5am–11pm</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">Your closest option — 20 minutes off Hwy 93. XC flow rather than bike-park berms, but Springbrook Loop has genuine swoopy fun on the descent with incredible Flatirons views. Best for after-work laps, testing new gear, or days when you don't want to drive far.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trail type:</span> Multi-use singletrack and gravel. No directional or even-day restrictions. Out-and-back or loop structure.</p>
+          <p><span class="access-label">Flow:</span> Park at Doudy Draw Trailhead → climb Doudy Draw Trail (smooth, non-technical, ~2 mi) → connect to Springbrook Loop via Community Ditch → descend Springbrook for the views and flow → return.</p>
+          <p><span class="access-label">Trailhead:</span> Doudy Draw Trailhead — 2601 Eldorado Springs Dr, Superior, CO 80027. Small lot — arrive before 9am on weekends.</p>
+          <p><span class="access-label">eMTB warning:</span> eMTBs NOT allowed on Goshawk Ridge or any trail without the eBike symbol. Check signage at junctions.</p>
+          <p><span class="access-label">Seasonal note:</span> May close during muddy spring conditions — check bouldercolorado.gov before going.</p>
+        </div>
+
+        <div class="permit-box free">
+          <strong>💚 FREE — No permit, no day pass.</strong> City of Boulder Open Space. 10 designated eMTB trails. Hours: 5am–11pm daily.
+        </div>
+
+        <div class="section-title">🗺️ All Trails</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Doudy Draw Trail (outbound)</td>
+              <td>Climb</td>
+              <td><span class="diff-pill diff-green">Green/Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Smooth gravel/singletrack from trailhead. Steady and non-technical. ~2 miles to top junction. eMTB express.</td>
+            </tr>
+            <tr>
+              <td>Community Ditch Trail</td>
+              <td>Connector</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Flat connector trail linking to Springbrook Loop trailhead. Easy pedal.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Springbrook Loop</span></td>
+              <td>Descent / Loop</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Best descent here. Swoopy singletrack with Flatirons views. Fast and flowing. The reason to come.</td>
+            </tr>
+            <tr>
+              <td>Doudy Draw Trail (return)</td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-green">Green/Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Simpler option — same trail back down. Flows nicely, mellow grade, good for a quick lap.</td>
+            </tr>
+            <tr>
+              <td>Flatirons Vista Loop</td>
+              <td>Add-on loop</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Rolling singletrack with open meadow views. Good add-on if you have extra time.</td>
+            </tr>
+            <tr>
+              <td>Goshawk Ridge Trail</td>
+              <td>Hiking only</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-hike">⛔ No eMTB</span></td>
+              <td><strong>eMTBs NOT allowed.</strong> Check signage at junctions — this restriction is enforced.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=Doudy+Draw+Trailhead+Superior+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/2601+Eldorado+Springs+Dr+Superior+CO+80027" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/marshall-mesa/" target="_blank">🗺️ Trailforks</a>
+      </div>
+    </div>
+
+    <!-- ===================== 8. FLOYD HILL ===================== -->
+    <div class="trail-card tier-c" data-tier="c" data-fee="free" data-drive="40" data-even="any">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#8</span>
+            <span class="card-name">Floyd Hill Open Space</span>
+            <span class="tier-badge b">⚡ Tier B</span>
+            <span style="font-size:11px;color:var(--orange);font-weight:700;">UPDATED</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~40 min / 30 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Floyd Hill / Idaho Springs, CO</span>
+            <span class="meta-item"><span class="icon">⬆️</span> Trailhead starts at ~8,000 ft</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-free">✅ FREE · No permit</span>
+            <span class="permit-banner" style="background:#EDE8DF;color:#5A4A3A;">Open any day</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">The key detail most people miss: the trailhead starts at nearly 8,000 ft, so the eMTB climb is short and easy compared to any other park on this list. The Sluice is the reason to come — the Front Range's first purpose-built bike-only directional downhill trail, with jumps, berms, drops, step-ups, step-downs, rock lines, and 700 ft of descent in 1.2 miles. Double black with a rideable single black main line. Built by FlowRide Concepts, same crew that built Maryland Mountain and Rutabaga. Solid odd-day alternative when Apex and Centennial Cone are hiker-only.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trailhead:</span> Floyd Hill Open Space parking lot on top of Floyd Hill — take I-70 Exit 248 (Floyd Hill/Beaver Brook), head west on US-40. Parking lot is on the west side of the large brown building at the top. Ample parking.</p>
+          <p><span class="access-label">Trail type:</span> Mix — climb loops are multi-use shared with hikers going up. The Sluice descent is bike-only directional. Hikers use the Skip Trail to descend (separate from The Sluice).</p>
+          <p><span class="access-label">Flow:</span> Park at summit-level trailhead (~8,000 ft) → short climb on Portal + Floyd's Loop + Canyon View Loop (multi-use, shared going up, clockwise recommended) → drop into The Sluice (bike-only, downhill only) → short non-technical 200 ft re-climb back to the lot → repeat laps. The eMTB makes the re-climb trivial. Described as "how many laps can you do in a day?"</p>
+          <p><span class="access-label">Land manager:</span> Clear Creek County Open Space. Class 1 eMTBs confirmed.</p>
+        </div>
+
+        <div class="permit-box free">
+          <strong>💚 FREE — No permit, no day pass, no even-day rule.</strong> Open any day. Less crowded than most Jeffco parks. Good summer option — high elevation keeps it cooler.
+        </div>
+
+        <div class="section-title">🗺️ All Trails</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Portal Trail</td>
+              <td>Climb access</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Start of the climb loop from parking lot. Mellow, heads west. Short connector to Floyd's Loop.</td>
+            </tr>
+            <tr>
+              <td>Floyd's Loop</td>
+              <td>Climb / Loop</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Main loop trail. Ride clockwise — climbs through open meadow with Clear Creek Canyon views. Connects to Canyon View Loop upper sections.</td>
+            </tr>
+            <tr>
+              <td>Canyon View Loop</td>
+              <td>Climb / Loop</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Upper loop extension added 2022. Panoramic Front Range and Centennial Cone views. Short Drift Bypass option for a steeper, quicker route back to Sluice drop-in.</td>
+            </tr>
+            <tr>
+              <td>Drift Bypass</td>
+              <td>Climb shortcut</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Steeper, shorter variant off Canyon View Loop. Use to cut the climb time and get to The Sluice faster on lap 2+.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ The Sluice</span></td>
+              <td>Descent</td>
+              <td><span class="diff-pill diff-black">Black / Dbl Black (alt lines)</span></td>
+              <td><span class="use-badge use-bike-only">Bike Only · Downhill Only</span></td>
+              <td>The whole reason to come. 1.2 miles, 623–700 ft descent, 9.6% average grade. Jumps (4–6 ft), dirt berms, rock berms, double rollers, tabletops, step-ups, step-downs, rock drops and gaps on alt lines. Main line is rollable single black; alt lines are black/double black. Built by FlowRide Concepts. I-70 visible below as you drop. Fast.</td>
+            </tr>
+            <tr>
+              <td>Skip Trail</td>
+              <td>Hiker descent</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-hike">Hikers Only</span></td>
+              <td>Hiker-only trail back down — keeps hikers completely off The Sluice. Good trail separation design.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=Floyd+Hill+Open+Space+Idaho+Springs+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/Floyd+Hill+Open+Space+Idaho+Springs+CO" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/floyd-hill-open-space-25197/" target="_blank">🗺️ Trailforks</a>
+
+        <div class="review-box">
+          <div class="star-rating">★★★★½ 4.5/5</div>
+          The Sluice is the Front Range's first purpose-built downhill-only bike trail — drops, step-ups, berms, tabletops, rock lines, and optional hucks. The uphill was short thanks to the high-elevation trailhead. Sluice was totally worth it. Fast and technical.
+          <div class="review-source">MTB Project / COMBA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 9. GOLDEN GATE CANYON ===================== -->
+    <div class="trail-card tier-c" data-tier="c" data-fee="paid" data-drive="50" data-even="any">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div>
+          <div class="card-title-row">
+            <span class="card-number">#9</span>
+            <span class="card-name">Golden Gate Canyon State Park</span>
+            <span class="tier-badge c">🌄 Tier C</span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item"><span class="icon">🚗</span> ~50 min / 35 mi</span>
+            <span class="meta-item"><span class="icon">📍</span> Gilpin / Jefferson County</span>
+            <span class="meta-item"><span class="icon">🏔️</span> 12,000 acres</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="permit-banner permit-paid">💛 $10 Day Pass</span>
+            <span class="permit-banner" style="background:#EDE8DF;color:#5A4A3A;">Open any day 5am–10pm</span>
+          </div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="card-body">
+        <p class="desc-text">Less about pure flow, more about a big beautiful day out. 12,000 acres, aspen groves, high meadows, sweeping descents. Best when you want an adventure rather than laps. The eMTB transforms what would be an exhausting XC epic into an enjoyable all-day mission. Save this for full adventure days.</p>
+
+        <div class="section-title">🚦 Access &amp; How It Works</div>
+        <div class="access-box">
+          <p><span class="access-label">Trail type:</span> Multi-use singletrack and doubletrack loop system — no directional or even-day rules. 38 of 44 trails open to MTB.</p>
+          <p><span class="access-label">Flow:</span> Loop-based — climbing and descending are woven throughout. Best approach: start at Bootleg Bottom Trailhead and follow Mule Deer Loop clockwise (~17km). Not ideal for pure lap-riding — plan for a 3–4 hour adventure day.</p>
+          <p><span class="access-label">Trailhead:</span> Main park entrance: 92 Crawford Gulch Rd, Golden, CO 80403. Multiple trailheads throughout — Bootleg Bottom for Mule Deer Loop. $10 vehicle day pass at entry gate.</p>
+          <p><span class="access-label">Hours:</span> 5am–10pm daily. Wildlife closures Mar–Jul on some trails — check cpw.state.co.us.</p>
+        </div>
+
+        <div class="permit-box paid">
+          <strong>💛 $10/vehicle day pass — required.</strong> Pay at entry gate. Colorado State Parks Annual Pass ($80) covers entry — shared with Staunton, pays for itself in ~8 combined visits. No reservation needed for day use.
+        </div>
+
+        <div class="section-title">🗺️ All Trails (eMTB-legal)</div>
+        <table class="trail-table">
+          <thead><tr><th>Trail</th><th>Type</th><th>Diff</th><th>Use</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="star-trail">★ Mule Deer Trail Loop</span></td>
+              <td>Full loop</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Most popular MTB route in the park. 17km, intermediate. Best descending sections through open meadows and aspen groves. Start at Bootleg Bottom, ride clockwise.</td>
+            </tr>
+            <tr>
+              <td><span class="star-trail">★ Horseshoe Trail → Frazer Meadow</span></td>
+              <td>Adventure route</td>
+              <td><span class="diff-pill diff-green">Green/Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Long scenic route through the heart of the park. Best eMTB adventure option — motor up, enjoy views, roll the descents. Good second loop after Mule Deer.</td>
+            </tr>
+            <tr>
+              <td>Raccoon Trail</td>
+              <td>Loop</td>
+              <td><span class="diff-pill diff-blue">Blue</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Classic loop through aspen groves. Can be combined with Mule Deer for a longer day.</td>
+            </tr>
+            <tr>
+              <td>Snowshoe Hare Trail</td>
+              <td>Loop</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-multi">Multi-use</span></td>
+              <td>Moderate beginner-friendly loop. Good warm-up or easy exploration if you want to see the park before committing to a full loop.</td>
+            </tr>
+            <tr>
+              <td>Elk Falls Trail / Overlook</td>
+              <td>Spur</td>
+              <td><span class="diff-pill diff-green">Green</span></td>
+              <td><span class="use-badge use-hike">Hike spur</span></td>
+              <td>Hiker-only spur to Elk Falls — worth the short walk off the bike. Beautiful waterfall and overlook.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">🔗 Links</div>
+        <a class="map-btn" href="https://maps.google.com/?q=Golden+Gate+Canyon+State+Park+Golden+CO" target="_blank">📍 View on Maps</a>
+        <a class="map-btn dir" href="https://www.google.com/maps/dir/80021/Golden+Gate+Canyon+State+Park+Golden+CO" target="_blank">🚗 Directions</a>
+        <a class="map-btn tf" href="https://www.trailforks.com/region/golden-gate-canyon-state-park/" target="_blank">🗺️ Trailforks</a>
+
+        <div class="review-box">
+          <div class="star-rating">★★★★★ 4.9/5 — 1,368 riders</div>
+          eMTBs make this majestic wilderness accessible to riders of various skill levels. Wind through aspen groves, encounter wildlife. The Mule Deer loop is a perfect intermediate eMTB ride — incredible state park with something for every rider.
+          <div class="review-source">Komoot / Visit Golden eMTB guide, 2025</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end trail-grid -->
+
+  <div class="no-results" id="noResults">No locations match this filter.</div>
+
+  <div style="background:var(--white);border-radius:14px;padding:16px;margin-top:16px;box-shadow:var(--shadow);">
+    <div class="section-title" style="margin-top:0;">📋 Quick Reference — Permits &amp; Rules</div>
+    <table class="trail-table" style="font-size:12px;">
+      <thead><tr><th>Location</th><th>Cost</th><th>Day Restriction</th><th>Seasonal Closure</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Maryland Mountain</strong></td><td>FREE</td><td>None — any day</td><td>None</td></tr>
+        <tr><td><strong>Apex Park</strong></td><td>FREE</td><td>⚠️ Bikes: even days only (weekends)</td><td>None currently (check jeffco.us)</td></tr>
+        <tr><td><strong>Virginia Canyon</strong></td><td>FREE to pedal · Gondola fee (optional)</td><td>None — any day</td><td>Dries fast in spring — one of first to open. Park in town, no trailhead lot.</td></tr>
+        <tr><td><strong>Centennial Cone</strong></td><td>FREE</td><td>⚠️ Bikes: even days only (weekends)</td><td>Dec 1 – Jan 31 (closed); Elk Range: Feb 1 – Jun 15</td></tr>
+        <tr><td><strong>White Ranch Park</strong></td><td>FREE</td><td>None — any day</td><td>Some seasonal wildlife closures Feb–Jul</td></tr>
+        <tr><td><strong>Staunton State Park</strong></td><td>$10/vehicle</td><td>None — any day</td><td>Wildlife closures Mar–Jul on select trails</td></tr>
+        <tr><td><strong>Marshall Mesa</strong></td><td>FREE</td><td>None — any day (5am–11pm)</td><td>Muddy conditions (spring) — check bouldercolorado.gov</td></tr>
+        <tr><td><strong>Floyd Hill</strong></td><td>FREE</td><td>None — any day</td><td>Trailhead at ~8,000 ft — short easy climb. The Sluice is bike-only directional DH.</td></tr>
+        <tr><td><strong>Golden Gate Canyon</strong></td><td>$10/vehicle</td><td>None — any day (5am–10pm)</td><td>Wildlife closures Mar–Jul on select trails</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:var(--stone);margin-top:10px;">⚠️ Always verify current rules at the trailhead or land manager website before riding. eMTB regulations are actively evolving. Class 1 (pedal-assist only, cuts out at 20 mph) is most widely accepted.</p>
+  </div>
+
+</div><!-- end main -->
+
+<div id="offlinePanel" style="display:none; background:#1A3A2A; color:#fff; border-radius:14px; margin:0 16px 16px; padding:18px; font-size:13px; line-height:1.6; max-width:868px; margin-left:auto; margin-right:auto;">
+  <div style="font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:20px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px; color:#D4A017;">📲 Save for Offline Use — iPhone Instructions</div>
+
+  <div style="background:rgba(255,255,255,0.08); border-radius:10px; padding:14px; margin-bottom:12px;">
+    <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:0.5px; color:#7FD4A0; margin-bottom:8px;">Option A — Safari (Recommended for iPhone)</div>
+    <div style="color:#D0C5B5; font-size:12px; margin-bottom:8px;">Safari is required to add to your home screen on iPhone. Chrome cannot do this step on iOS.</div>
+    <ol style="margin:0; padding-left:18px; color:#E8E0D0;">
+      <li style="margin-bottom:6px;">Download this file to your iPhone — tap <strong>Download HTML File</strong> below</li>
+      <li style="margin-bottom:6px;">Open the <strong>Files app</strong> on your iPhone</li>
+      <li style="margin-bottom:6px;">Find the file in <strong>Downloads</strong> folder — tap and hold it → tap <strong>Share</strong></li>
+      <li style="margin-bottom:6px;">In the Share sheet, tap <strong>Open in Safari</strong> (scroll down if you don't see it)</li>
+      <li style="margin-bottom:6px;">Once open in Safari, tap the <strong>Share button</strong> (box with arrow at bottom of screen)</li>
+      <li style="margin-bottom:6px;">Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+      <li style="margin-bottom:6px;">Name it <strong>"eMTB Guide"</strong> → tap <strong>Add</strong></li>
+      <li>Done — tap the icon on your home screen anytime, works fully offline ✅</li>
+    </ol>
+  </div>
+
+  <div style="background:rgba(255,255,255,0.08); border-radius:10px; padding:14px; margin-bottom:12px;">
+    <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:0.5px; color:#7FD4A0; margin-bottom:8px;">Option B — Chrome (View only, no home screen shortcut)</div>
+    <div style="color:#D0C5B5; font-size:12px; margin-bottom:8px;">Apple restricts "Add to Home Screen" to Safari only. Chrome on iPhone can open and bookmark the file but cannot pin it as an app icon.</div>
+    <ol style="margin:0; padding-left:18px; color:#E8E0D0;">
+      <li style="margin-bottom:6px;">Download this file — tap <strong>Download HTML File</strong> below</li>
+      <li style="margin-bottom:6px;">Open the <strong>Files app</strong> → find file in <strong>Downloads</strong></li>
+      <li style="margin-bottom:6px;">Tap and hold → tap <strong>Share</strong> → tap <strong>Copy</strong> to copy the file path</li>
+      <li style="margin-bottom:6px;">Open <strong>Chrome</strong> → tap the address bar → type <code style="background:rgba(255,255,255,0.15); padding:1px 4px; border-radius:3px;">file://</code> then paste</li>
+      <li style="margin-bottom:6px;">Alternatively: in Files app, tap the file once — it will open in Safari. Then copy the URL from Safari and paste into Chrome</li>
+      <li>Bookmark it in Chrome for quick access — works offline once loaded ✅</li>
+    </ol>
+  </div>
+
+  <div style="background:rgba(255,255,255,0.08); border-radius:10px; padding:14px; margin-bottom:14px;">
+    <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:0.5px; color:#7FD4A0; margin-bottom:8px;">What Works Offline vs. Needs Internet</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px;">
+      <div>
+        <div style="color:#7FD4A0; font-weight:700; margin-bottom:4px;">✅ Works Offline</div>
+        <div style="color:#E8E0D0;">All trail info &amp; descriptions<br>Filter buttons (Tier A/B/C etc.)<br>Even/odd day calculator<br>Expand/collapse cards<br>Permit &amp; rules info<br>Trail tables</div>
+      </div>
+      <div>
+        <div style="color:#F4A0A0; font-weight:700; margin-bottom:4px;">📶 Needs Internet</div>
+        <div style="color:#E8E0D0;">📍 Maps buttons<br>🚗 Directions buttons<br>🗺️ Trailforks links<br>🚠 Gondola ticket link<br>Google Fonts (falls back gracefully)</div>
+      </div>
+    </div>
+  </div>
+
+  <a id="downloadBtn" download="Colorado_eMTB_Trail_Guide.html" style="display:inline-flex; align-items:center; gap:8px; background:#D4A017; color:#2C1A0E; text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:15px; letter-spacing:0.5px; text-transform:uppercase; padding:12px 20px; border-radius:10px; margin-right:10px;">⬇️ Download HTML File</a>
+  <button onclick="document.getElementById('offlinePanel').style.display='none'" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:#D0C5B5; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; padding:12px 16px; border-radius:10px; cursor:pointer;">Close</button>
+</div>
+
+<div class="footer">
+  Colorado eMTB Trail Guide · Updated June 2026 · Westminster/Broomfield (80021)<br>
+  Drive times estimated from 8725 Parkland St, Broomfield CO 80021 · Class 1 eMTBs only unless noted<br>
+  Always verify rules at trailhead · <a href="https://jeffco.us/open-space" target="_blank">Jeffco Open Space</a> · <a href="https://cpw.state.co.us" target="_blank">Colorado State Parks</a> · <a href="https://www.trailforks.com" target="_blank">Trailforks</a>
+</div>
+
+<script>
+  // ---- OFFLINE PANEL ----
+  function toggleOffline() {
+    const panel = document.getElementById('offlinePanel');
+    const btn = document.getElementById('downloadBtn');
+    // Set the download href to this page itself
+    btn.href = window.location.href;
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    if (panel.style.display === 'block') {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // ---- TODAY + EVEN/ODD STATUS ----
+  function updateTodayStatus() {
+    const now = new Date();
+    const dayNum = now.getDate();
+    const isEven = dayNum % 2 === 0;
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const isWeekend = now.getDay() === 0 || now.getDay() === 6;
+
+    document.getElementById('todayDate').textContent =
+      `${days[now.getDay()]}, ${months[now.getMonth()]} ${dayNum}`;
+
+    const statusEl = document.getElementById('evenStatus');
+    const apexEl = document.getElementById('apexStatus');
+    const coneEl = document.getElementById('coneStatus');
+
+    if (!isWeekend) {
+      statusEl.textContent = 'Weekday — All trails open';
+      statusEl.className = 'even-status open';
+      if (apexEl) apexEl.textContent = '✅ Weekday — Bikes open today';
+      if (coneEl) coneEl.textContent = '✅ Weekday — Bikes open today';
+    } else if (isEven) {
+      statusEl.textContent = `Even day (${dayNum}) — Bikes open at Apex & Cone`;
+      statusEl.className = 'even-status open';
+      if (apexEl) apexEl.textContent = '✅ Bikes open today (even day)';
+      if (coneEl) coneEl.textContent = '✅ Bikes open today (even day)';
+    } else {
+      statusEl.textContent = `Odd day (${dayNum}) — Hikers only at Apex & Cone`;
+      statusEl.className = 'even-status closed';
+      if (apexEl) apexEl.textContent = '🚫 Hikers only today (odd day)';
+      if (coneEl) coneEl.textContent = '🚫 Hikers only today (odd day)';
+    }
+  }
+
+  updateTodayStatus();
+
+  // ---- TOGGLE CARDS ----
+  function toggleCard(card) {
+    card.classList.toggle('open');
+  }
+
+  // ---- FILTERS ----
+  function applyFilter(type, btn) {
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const now = new Date();
+    const isEven = now.getDate() % 2 === 0;
+    const isWeekend = now.getDay() === 0 || now.getDay() === 6;
+    const evenOpen = !isWeekend || isEven;
+
+    const cards = document.querySelectorAll('.trail-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const tier = card.dataset.tier;
+      const fee = card.dataset.fee;
+      const drive = parseInt(card.dataset.drive);
+      const even = card.dataset.even;
+
+      let show = true;
+
+      if (type === 'a') show = tier === 'a';
+      else if (type === 'b') show = tier === 'b';
+      else if (type === 'c') show = tier === 'c';
+      else if (type === 'free') show = fee === 'free';
+      else if (type === 'close') show = drive <= 35;
+      else if (type === 'even-open') {
+        // Show trails that are open today (any trail on weekday, or non-even-restricted on odd weekend)
+        show = even === 'any' || evenOpen;
+      }
+
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+
+    document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // Update even-day filter button label
+  const now = new Date();
+  const isEven2 = now.getDate() % 2 === 0;
+  const isWeekend2 = now.getDay() === 0 || now.getDay() === 6;
+  const filterBtn = document.getElementById('evenFilterBtn');
+  if (isWeekend2) {
+    filterBtn.textContent = isEven2 ? '📅 Open Today (even)' : '📅 Closed Today (odd)';
+  } else {
+    filterBtn.textContent = '📅 Open Today (weekday)';
+  }
+</script>
+
+</body>
+</html>
